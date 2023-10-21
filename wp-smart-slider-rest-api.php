@@ -32,29 +32,25 @@ function get_smart_slider_slides($request) {
     );
 
     $results = $wpdb->get_results($query);
+    $slides = array();
 
     if ($results) {
-        $slides = array();
-
         foreach ($results as $result) {
-          // Get the image URL based on the thumbnail ID.
-          $thumbnail_url = get_site_url() . '/wp-content/uploads' . str_replace('$upload$', '', $result->thumbnail_id);
+            // Get the image URL based on the thumbnail ID.
+            $thumbnail_url = get_site_url() . '/wp-content/uploads' . str_replace('$upload$', '', $result->thumbnail_id);
 
-          // Customize this part to format the slide data as needed.
-          $slide_data = array(
-              'slider_id' => $result->slider_id,
-              'id' => $result->slide_id,
-              'ordering' => $result->slide_ordering,
-              'thumbnail' => $thumbnail_url
-          );
+            // Customize this part to format the slide data as needed.
+            $slide_data = array(
+                'slider_id' => $result->slider_id,
+                'id' => $result->slide_id,
+                'ordering' => $result->slide_ordering,
+                'thumbnail' => $thumbnail_url
+            );
 
-          $slides[] = $slide_data;
+            $slides[] = $slide_data;
         }
-
-      return rest_ensure_response($slides);
-    } else {
-        return new WP_Error('no_slides_found', 'No slides found with the specified title.', array('status' => 404));
-    }
+    } 
+    return rest_ensure_response($slides);
 }
 
 ?>
